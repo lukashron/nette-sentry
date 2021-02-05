@@ -1,0 +1,27 @@
+parameters:
+    sentry:
+        in_app_exclude:
+            - %appDir%/../vendor/
+            - %appDir%/../temp/
+        send_default_pii: true
+
+application:
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+session:
+	expiration: 14 days
+
+extensions:
+    console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+    console.extra: Contributte\Console\Extra\DI\ConsoleBridgesExtension
+
+console:
+    name: Nettsentry
+    version: 1.0
+    url: https://lukashron.cz
+    lazy: true
+
+services:
+    tracy.logger: App\Logging\SentryDecoratedTracyLogger(%sentry%)
+    router: App\Router\RouterFactory::createRouter
